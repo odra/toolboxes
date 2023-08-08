@@ -1,0 +1,26 @@
+FROM registry.fedoraproject.org/fedora-toolbox:38
+
+RUN dnf install -y \
+gcc \
+rpm-build \
+rpm-devel \
+rpmlint \
+make \
+python \
+bash \
+coreutils \
+diffutils \
+patch \
+vim \
+rpmdevtools
+
+RUN rpmdev-setuptree && \
+mkdir -p /opt/pkgbox && \
+mv /root/rpmbuild /opt/pkgbox && \
+chown -R 1000:0 /opt/pkgbox
+
+COPY files/ /
+
+WORKDIR /opt/pkgbox/rpmbuild
+
+USER 1000
