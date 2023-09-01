@@ -1,0 +1,6 @@
+FROM registry.fedoraproject.org/fedora-toolbox:38
+
+RUN dnf install -y \
+libXtst libXtst-devel \
+libXrender libXrender-devel \
+freetype freetype-devel
