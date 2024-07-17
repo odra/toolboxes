@@ -1,0 +1,37 @@
+FROM quay.io/fedora/fedora:39
+
+# nice to have dev dependencies
+RUN dnf install -y vim git
+
+# cuda dependencies
+RUN dnf install -y \
+passwd \
+wget \
+make \
+gcc-c++ \
+freeglut-devel \
+libXi-devel \
+libXmu-devel \
+mesa-libGLU-devel \
+perl-Tie-File perl-Env \
+perl-Term-ReadLine
+
+# needed for xorg nvidia libs
+RUN dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-39.noarch.rpm \
+https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-39.noarch.rpm
+
+# nvidia private pkgs
+RUN dnf install -y \
+xorg-x11-drv-nvidia-libs \
+xorg-x11-drv-nvidia-libs.i686
+
+# list installed nvidia libs
+RUN rpm --query --list xorg-x11-drv-nvidia-libs | grep -P '\.so(\.[123])?$'
+
+# install cuda from nvidia repositories
+RUN wget -O /etc/yum.repos.d/cuda-fedora39.repo https://developer.download.nvidia.com/compute/cuda/repos/fedora39/x86_64/cuda-fedora39.repo && \
+dnf install -y cuda-toolkit-12-5
+
+# clone cuda samples repository
+RUN mkdir -p /opt/cuda/src && \
+git clone https://github.com/NVIDIA/cuda-samples.git /opt/cuda/src/cuda-samples
