@@ -1,0 +1,6 @@
+FROM registry.fedoraproject.org/fedora-toolbox:40
+
+RUN dnf update -y && \
+dnf install -y vim git podman skopeo buildah '@development-tools' '@virtualization'
+
+COPY rootfs/ /
