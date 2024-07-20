@@ -9,9 +9,11 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SUBCMD="${1}"
 SUBCMD_PATH="${SCRIPT_DIR}/toolbox-mgr-${SUBCMD}"
 
+source "${SCRIPT_DIR}/../lib/sys.sh"
+
 if [ ! -f "${SUBCMD_PATH}" ]; then
-  echo "Command not found: \"${SUBCMD}\""
+  sys::perror "Command not found: \"${SUBCMD}\""
   exit 1
 fi
 
-${SUBCMD_PATH} ${@:2}
+exec ${SUBCMD_PATH} ${@:2}

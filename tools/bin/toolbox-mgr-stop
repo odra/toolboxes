@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+source "${SCRIPT_DIR}/../lib/sys.sh"
+
+cmd_stop() {
+  local box_name="${1}"
+
+  if [ -z "${box_name}" ]; then
+    sys::perror "Box name not specified."
+    exit 1
+  fi
+  
+  sys::pinfo "Stopping: ${box_name}-box"
+
+
+  podman stop ${box_name}-box
+}
+
+main() {
+  local box_name="${1}"
+
+  cmd_stop "${box_name}"
+}
+
+main ${@}
