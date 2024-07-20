@@ -13,13 +13,14 @@ printe() {
 
 cmd_build() {
   local images_dir="${1}"
-  local img_name="${2}"
+  local src_dir="${2}"
+  local image_name="${3}"
 
-  if [ -z "${img_name}" ]; then
+  if [ -z "${image_name}" ]; then
     printe "Cannot build image without a name." 1
   fi
 
-  local img_dir="${images_dir}/${img_name}"
+  local img_dir="${images_dir}/${src_dir}"
 
   if [ ! -d ${img_dir} ]; then
     printe "Directory not found: ${img_dir}" 1
@@ -27,11 +28,23 @@ cmd_build() {
 
   echo "[INFO} Building: ${img_dir}"
 
-  podman build -t localhost/${img_name}:latest -f ${img_dir}/Containerfile
+  podman build -t ${image_name} -f ${img_dir}/Containerfile ${img_dir}
 }
 
-if [ -z "${TB_MGR_IMAGES_DIR}" ]; then
-  printe '"TB_MGR_IMAGES_DIR" environment variable not defined.' 1
+if [ -z "${TBMGR_IMAGES_DIR}" ]; then
+  printe '"TBMGR_IMAGES_DIR" environment variable not defined.' 1
 fi
 
-cmd_build "${TB_MGR_IMAGES_DIR}" "${1}" 
+main() {
+  local build_dir="${TBMGR_IMAGES_DIR}" 
+  local src_dir="${1}"
+  local image_name="${2}"
+
+  if [ -z "${image_name}" ]; then
+    image_name="localhost/$(echo ${src_dir} | tr '/' '-')-box:latest"
+  fi
+
+  cmd_build "${build_dir}" "${src_dir}" "${image_name}"
+}
+
+main ${@}
