@@ -1,12 +1,14 @@
 SHELL := /bin/bash
-INSTALL_DIR := ${HOME}/.local/bin/
+INSTALL_DIR := ${HOME}/.local/toolbox-mgr
 INSTALL_CMD := /usr/bin/install
 
-.PHONY: prepare
-prepare:
-	mkdir -p ${INSTALL_DIR}
+.PHONY: install-bin
+install-bin:
+	find bin/ -type f | xargs -I {} install -D {} ~/.local/toolbox-mgr/{}
+
+.PHONY: install-lib
+install-lib:
+	find lib/ -type f | xargs -I {} install -D {} ~/.local/toolbox-mgr/{}
 
 .PHONY: install
-install: prepare
-	${INSTALL_CMD} ${PWD}/toolbox-mgr ${HOME}/.local/bin/toolbox-mgr
-	${INSTALL_CMD} ${PWD}/toolbox-mgr-build ${HOME}/.local/bin/toolbox-mgr-build
+install: install-bin install-lib
