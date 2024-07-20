@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ -z ${TBMGR_IMAGES_DIR} ]; then
+  echo 'TBMGR_IMAGES_DIR environment variable not set.'
+  exit 1
+fi
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SUBCMD="${1}"
 SUBCMD_PATH="${SCRIPT_DIR}/toolbox-mgr-${SUBCMD}"
 
