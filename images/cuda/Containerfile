@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora:39
+FROM quay.io/fedora/fedora:41
 
 # nice to have dev dependencies
 RUN dnf install -y vim git

@@ -1,4 +1,4 @@
-FROM quay.io/lrossett/rpmbuild-base-toolbox:f38
+FROM quay.io/lrossett/rpmbuild-base-toolbox:f41
 
 USER root
 
