@@ -12,4 +12,5 @@ elfutils-libelf \
 elfutils-libelf-devel \
 cpio \
 zstd \
-kmod
+kmod \
+bc
