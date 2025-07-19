@@ -1,0 +1,34 @@
+FROM localhost/base-box:latest
+
+RUN dnf install -y \
+  wine \
+  winetricks \
+  cabextract \
+  p7zip \
+  unzip \
+  samba-winbind \
+  alsa-lib \
+  alsa-plugins-pulseaudio \
+  pulseaudio-utils \
+  libXcomposite \
+  libXcursor \
+  libXdamage \
+  libXfixes \
+  libXi \
+  libXrandr \
+  libXrender \
+  mesa-dri-drivers \
+  mesa-libGL \
+  mesa-libGLU \
+  vulkan-loader \
+  vulkan-tools \
+  fontconfig \
+  freetype \
+  glx-utils \
+  xorg-x11-server-Xvfb
+
+RUN dnf install -y \
+  https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+  https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+RUN  dnf install -y xorg-x11-drv-nvidia-470xx
