@@ -1,7 +1,0 @@
-FROM quay.io/lrossett/rpmbuild-base-toolbox:f41
-
-USER root
-
-RUN dnf install -y golang go2rpm
-
-USER 1001

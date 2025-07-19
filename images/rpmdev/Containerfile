@@ -1,0 +1,24 @@
+FROM localhost/base-box:latest
+
+RUN dnf install -y \
+gcc \
+rpm-build \
+rpm-devel \
+rpmlint \
+python \
+bash \
+coreutils \
+diffutils \
+patch \
+rpmdevtools
+
+RUN rpmdev-setuptree && \
+mkdir -p /opt/rpm && \
+mv /root/rpmbuild /opt/rpm && \
+chown -R 1000:0 /opt/rpm
+
+COPY files/ /
+
+WORKDIR /opt/rpm
+
+USER 1000

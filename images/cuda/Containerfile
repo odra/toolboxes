@@ -1,7 +1,4 @@
-FROM quay.io/fedora/fedora:41
-
-# nice to have dev dependencies
-RUN dnf install -y vim git
+FROM localhost/base-box:latest
 
 # cuda dependencies
 RUN dnf install -y \

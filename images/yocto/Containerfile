@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora-toolbox:41
+FROM quay.io/fedora/fedora:39
 
 ARG KAS_URL=https://github.com/siemens/kas/archive/refs/heads/master.zip
 
