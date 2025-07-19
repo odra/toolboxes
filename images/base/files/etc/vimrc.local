@@ -1,0 +1,33 @@
+call plug#begin('/etc/vim/plugged')
+
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+call plug#end()
+
+" tabs and stuff
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+" set line number
+set number
+
+" code syntax highlight
+syntax on
+
+" netrw
+let g:netrw_banner=0
+
+" Netrw buffer fix
+function! _NetrwBifferFix() 
+    execute 'bdelete'
+    execute 'Ex'
+endf
+
+" autocmd FileType netrw call _NetrwBifferFix()
+:command EE call _NetrwBifferFix()
+

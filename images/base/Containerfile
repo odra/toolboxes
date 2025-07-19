@@ -1,0 +1,11 @@
+FROM quay.io/fedora/fedora-toolbox:42
+
+RUN dnf install -y vim make git curl wget \
+podman
+
+COPY files/ /
+
+RUN curl -fLo /usr/share/vim/vim91/autoload/plug.vim --create-dirs \
+https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+RUN vim -c 'PlugInstall' -c 'qa'
