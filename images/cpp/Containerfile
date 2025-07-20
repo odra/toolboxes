@@ -1,0 +1,11 @@
+FROM localhost/base-box:latest
+
+RUN dnf install -y cmake
+
+RUN dnf install -y gcc-c++ \
+cmake gdb \
+valgrind
+
+RUN dnf install -y ninja \
+boost-devel \
+fmt-devel
