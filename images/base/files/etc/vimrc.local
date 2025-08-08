@@ -30,4 +30,3 @@ endf
 
 " autocmd FileType netrw call _NetrwBifferFix()
 :command EE call _NetrwBifferFix()
-

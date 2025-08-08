@@ -1,0 +1,12 @@
+FROM quay.io/toolbx/ubuntu-toolbox:24.04
+
+RUN apt update && apt install -y vim make git curl wget podman
+
+COPY files/ /
+
+RUN mv /etc/vimrc.local /etc/vim/vimrc.local
+
+RUN curl -fLo /usr/share/vim/vim91/autoload/plug.vim --create-dirs \
+https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+RUN vim -c 'PlugInstall' -c 'qa'

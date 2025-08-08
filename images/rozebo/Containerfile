@@ -1,0 +1,53 @@
+FROM localhost/base-box:ubuntu
+
+# Nvidia
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb && \
+dpkg -i cuda-keyring_1.1-1_all.deb && \
+rm -f cuda-keyring_1.1-1_all.deb
+
+RUN apt update && \
+apt install -y cuda-toolkit nvidia-gds
+
+# Carla
+RUN mkdir -p /opt/carla
+
+ADD https://tiny.carla.org/carla-0-9-15-linux /opt/carla/carla.tar.gz
+
+RUN (cd /opt/carla; tar -zxvpf carla.tar.gz; rm -f carla.tar.gz)
+
+ENV CARLA_HOME=/opt/carla
+
+# ROS2 (Kilted)
+ENV ROS_DISTRO=kilted
+ENV LANG=en_US.UTF-8
+
+RUN apt update &&  \
+apt install -y locales && \
+locale-gen en_US en_US.UTF-8 && \
+update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+
+RUN apt install -y software-properties-common && \
+add-apt-repository universe
+
+RUN apt update && sudo apt install curl -y && \
+export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}') && \
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" && \
+dpkg -i /tmp/ros2-apt-source.deb && \
+rm -f /tmp/ros2-apt-source.deb
+
+RUN apt update && apt install -y ros-dev-tools
+
+RUN apt update && \
+apt install -y ros-${ROS_DISTRO}-desktop
+
+# Gazebo
+ENV GZ_VERSION=ionic
+
+RUN apt update && \
+apt install -y lsb-release gnupg
+
+RUN curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+
+RUN apt-get update && \
+apt-get install -y gz-ionic ros-${ROS_DISTRO}-ros-gz
