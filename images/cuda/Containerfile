@@ -5,8 +5,11 @@
 
 FROM quay.io/fedora/fedora-toolbox:43
 
-# Required labels for toolbox compatibility
-LABEL com.github.containers.toolbox="true"
+# CUDA environment (libraries injected from host via nvidia-container-toolkit)
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV PATH=/usr/local/cuda/bin:${PATH}
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
 
 # Add NVIDIA CUDA repo
 RUN curl https://developer.download.nvidia.com/compute/cuda/repos/fedora43/x86_64/cuda-fedora43.repo > /etc/yum.repos.d/cuda.repo
@@ -20,9 +23,3 @@ RUN dnf install -y \
     userspace-rcu \
     cuda-toolkit \
     && dnf clean all
-
-# CUDA environment (libraries injected from host via nvidia-container-toolkit)
-ENV NVIDIA_VISIBLE_DEVICES=all
-ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
-ENV PATH=/usr/local/cuda/bin:${PATH}
-ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
